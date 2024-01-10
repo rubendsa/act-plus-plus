@@ -107,8 +107,22 @@ RUN /opt/conda/envs/aloha/bin/python -m pip install \
     ipython
 
 # WORKDIR act-plus-plus/detr
-COPY . /act-plus-plus
-WORKDIR /act-plus-plus/detr
-RUN pwd
-RUN ls -la && pwd
+COPY detr /detr
+WORKDIR /detr
 RUN /opt/conda/envs/aloha/bin/python -m pip install -e .
+
+RUN apt-get update && apt-get install -y libglib2.0-0
+
+# Set the working directory
+WORKDIR /tempdir
+
+# Uninstall robomimic if it's installed
+RUN pip uninstall -y robomimic
+RUN git clone https://github.com/ARISE-Initiative/robomimic.git
+
+# Change into the robomimic directory and checkout the desired branch
+WORKDIR /tempdir/robomimic
+RUN git checkout diffusion-policy-mg
+
+# Install robomimic and diffusers
+RUN pip install -e . && pip install diffusers
