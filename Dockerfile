@@ -1,34 +1,32 @@
 FROM pytorch/pytorch:2.1.0-cuda12.1-cudnn8-runtime
 ENV DEBIAN_FRONTEND=noninteractive 
 
-# dependencies for gym
-#
-RUN apt-get update \
- && apt-get install -y --no-install-recommends \
- libxcursor-dev \
- libxrandr-dev \
- libxinerama-dev \
- libxi-dev \
- mesa-common-dev \
- zip \
- unzip \
- make \
- gcc-8 \
- g++-8 \
- vulkan-utils \
- mesa-vulkan-drivers \
- pigz \
- git \
- libegl1 \
- git-lfs
+# RUN apt-get update \
+#  && apt-get install -y --no-install-recommends \
+#  libxcursor-dev \
+#  libxrandr-dev \
+#  libxinerama-dev \
+#  libxi-dev \
+#  mesa-common-dev \
+#  zip \
+#  unzip \
+#  make \
+#  gcc-8 \
+#  g++-8 \
+#  vulkan-utils \
+#  mesa-vulkan-drivers \
+#  pigz \
+#  git \
+#  libegl1 \
+#  git-lfs
 
-# Force gcc 8 to avoid CUDA 10 build issues on newer base OS
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 8
-RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 8
+# # Force gcc 8 to avoid CUDA 10 build issues on newer base OS
+# RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 8
+# RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 8
 
 # WAR for eglReleaseThread shutdown crash in libEGL_mesa.so.0 (ensure it's never detected/loaded)
 # Can't remove package libegl-mesa0 directly (because of libegl1 which we need)
-RUN rm /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0 /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0 /usr/share/glvnd/egl_vendor.d/50_mesa.json
+# RUN rm /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0 /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0 /usr/share/glvnd/egl_vendor.d/50_mesa.json
 
 # COPY docker/nvidia_icd.json /usr/share/vulkan/icd.d/nvidia_icd.json
 # COPY docker/10_nvidia.json /usr/share/glvnd/egl_vendor.d/10_nvidia.json
@@ -60,8 +58,10 @@ ENV PATH /opt/conda/envs/aloha/bin:$PATH
 
 # Install libpython3.8
 USER root
-RUN apt-get update && apt-get install -y libpython3.8
-RUN apt-get update && apt-get install -y build-essential
+# RUN apt-get update && apt-get install -y libpython3.8
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    git
 
 
 # WAR for eglReleaseThread shutdown crash in libEGL_mesa.so.0 (ensure it's never detected/loaded)
@@ -71,24 +71,24 @@ RUN apt-get update && apt-get install -y build-essential
 # COPY nvidia_icd.json /usr/share/vulkan/icd.d/nvidia_icd.json
 # COPY 10_nvidia.json /usr/share/glvnd/egl_vendor.d/10_nvidia.json
 
-RUN apt-get update \
- && apt-get install -y --no-install-recommends \
- libxcursor-dev \
- libxrandr-dev \
- libxinerama-dev \
- libxi-dev \
- mesa-common-dev \
- zip \
- unzip \
- make \
- gcc-8 \
- g++-8 \
- vulkan-utils \
- mesa-vulkan-drivers \
- pigz \
- git \
- libegl1 \
- git-lfs
+# RUN apt-get update \
+#  && apt-get install -y --no-install-recommends \
+#  libxcursor-dev \
+#  libxrandr-dev \
+#  libxinerama-dev \
+#  libxi-dev \
+#  mesa-common-dev \
+#  zip \
+#  unzip \
+#  make \
+#  gcc-8 \
+#  g++-8 \
+#  vulkan-utils \
+#  mesa-vulkan-drivers \
+#  pigz \
+#  git \
+#  libegl1 \
+#  git-lfs
 
 RUN /opt/conda/envs/aloha/bin/python -m pip install \
     torchvision \

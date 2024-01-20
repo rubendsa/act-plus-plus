@@ -11,7 +11,7 @@ docker build -t aloha .
 # Check if the container exists
 if [ $(docker ps -a -f name=aloha | grep -w aloha | wc -l) -eq 0 ]; then
     # Create the Docker container
-    docker run --name aloha -d -P -it -v /tmp/.X11-unix:/tmp/.X11-unix --ipc=host --pid=host --network=host --gpus=all -v $VOLUME_PATH:/act-plus-plus aloha:latest
+    docker run --name aloha -d -P -it -v /tmp/.X11-unix:/tmp/.X11-unix -v $VOLUME_PATH:/act-plus-plus --ipc=host --pid=host --network=host --gpus=all  aloha:latest
 fi
 
 # Start the Docker container
