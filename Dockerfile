@@ -37,7 +37,7 @@ COPY detr /detr
 WORKDIR /detr
 RUN /opt/conda/envs/aloha/bin/python -m pip install -e .
 
-RUN apt-get update && apt-get install -y libglib2.0-0
+RUN apt-get update && apt-get install -y libglib2.0-0 libegl1-mesa-dev
 
 # Set the working directory
 WORKDIR /tempdir
