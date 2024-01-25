@@ -30,7 +30,8 @@ RUN /opt/conda/envs/aloha/bin/python -m pip install \
     einops \
     packaging \
     h5py \
-    ipython
+    ipython \
+    wandb
 
 # WORKDIR act-plus-plus/detr
 COPY detr /detr
